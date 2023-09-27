@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+
+	<!-- Fav Icon -->
+	<link rel="icon" href="assets/background/expenses.png" type="image/x-icon">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style and js/stylesheet.css" />
+    <link rel="stylesheet" href="assets/style and js/fonts.css">
+</head>
+<body>
+	<button id="delete_cookies_button" class="delete-cookies-button">Delete All Cookies</button>
+
+    <div class="mainBody">
+		<div id="devDetailsSection" class="devDetailsSection">
+			<div class="devDetail"><span id="developer_name">Developed by <a href="https://www.linkedin.com/in/kiranroy-patravali-45b04a104/" title="Let's Connect &#x1F468;&#x200D;&#x1F4BB;">Kiranroy</a></span></div>
+			<div class="dateTime">
+				<span id="current_date"></span>
+				<span id="current_time"></span>
+			</div>
+		</div>
+		
+		
+        <header>
+            <h1>Expense Tracker</h1>
+            <form id="new_expense_form">
+				<input 
+					type="text" 
+					name="new_expense_input" 
+					id="new_expense_input" 
+					placeholder="Enter expense here..." 
+					autocomplete="off" 
+					required/>
+				<input 
+					type="number" 
+					name="new_expense_price" 
+					id="new_expense_price" 
+					placeholder="₹₹₹" 
+					autocomplete="off" 
+					required/>
+				<input 
+					type="text" 
+					name="new_expense_date" 
+					id="new_expense_date" 
+					placeholder="Enter date and time (YYYY-MM-DD HH:mm:ss)" 
+					autocomplete="off"
+					hidden />
+				<input 
+					type="submit" 
+					id="new_expense_submit" 
+					value="Add expense" />
+			</form>
+			
+        </header>
+        <main>
+            <section class="expense_list">
+                <h2>Expenses</h2>
+                <div id="expenses">
+                    <!-- Expense items will be added here -->
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="assets/style and js/main.js"></script> 
+	<script src="assets/style and js/time.js"></script> 
+    <script src="assets/bootstrap/js/jquery.js"></script> 
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
