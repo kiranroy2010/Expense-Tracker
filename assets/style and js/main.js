@@ -1,5 +1,40 @@
+// Define the calculateTotalExpense function outside the event listener block
+function calculateTotalExpense(deletedExpense) {
+    // Define the getCookie function within the calculateTotalExpense function scope
+    function getCookie(name) {
+        const cookieValue = document.cookie.match(`(^|;) ?${name}=([^;]*)(;|$)`);
+        return cookieValue ? decodeURIComponent(cookieValue[2]) : null;
+    }
+
+    const savedExpenses = JSON.parse(getCookie("expenses")) || [];
+    let totalExpense = 0;
+
+    // Iterate through saved expenses and add up the prices
+    for (const expense of savedExpenses) {
+        const price = parseFloat(expense.price); // Convert price to a floating-point number
+        if (!isNaN(price)) {
+            totalExpense += price;
+        }
+    }
+
+    // If a deletedExpense is provided, subtract its price from the total
+    if (deletedExpense) {
+        const deletedPrice = parseFloat(deletedExpense.price);
+        if (!isNaN(deletedPrice)) {
+            totalExpense -= deletedPrice;
+        }
+    }
+
+    // Update the HTML element with the total expense
+    const totalExpenseElement = document.getElementById("total_expense");
+    totalExpenseElement.textContent = `Total Expense: ₹ ${totalExpense.toFixed(2)}`;
+}
+
+
 // Section: Page Initialization
+
 window.addEventListener('load', () => {
+    let expensePrice;
     const form = document.querySelector("#new_expense_form");
     const input = document.querySelector("#new_expense_input");
     const priceInput = document.querySelector("#new_expense_price");
@@ -36,7 +71,7 @@ window.addEventListener('load', () => {
         e.preventDefault();
 
         const expenseText = input.value;
-        const expensePrice = priceInput.value;
+        expensePrice = priceInput.value;
         const expenseDate = dateInput.value;
 
         if (expenseText.trim() === "" || expensePrice.trim() === "" || expenseDate.trim() === "") {
@@ -95,6 +130,8 @@ window.addEventListener('load', () => {
                 expense_price_el.contentEditable = true;
                 expense_date_el.contentEditable = true;
                 expense_item_el.focus();
+                // After editing an expense, call calculateTotalExpense to update the total
+        calculateTotalExpense();
             } else {
                 // Save the edited expense
                 const updatedExpenseText = expense_item_el.textContent.replace("Item: ", "");
@@ -124,6 +161,9 @@ window.addEventListener('load', () => {
                 expense_price_el.contentEditable = false;
                 expense_date_el.contentEditable = false;
                 expense_edit_el.innerText = "Edit";
+
+                  // Recalculate and display the total expense
+                  calculateTotalExpense();
             }
         });
 
@@ -132,6 +172,9 @@ window.addEventListener('load', () => {
             // Remove the expense from the saved expenses in cookies
             const updatedExpenses = savedExpenses.filter((e) => e.text !== expenseText);
             setCookie("expenses", JSON.stringify(updatedExpenses));
+             // Recalculate and display the total expense
+             calculateTotalExpense({ price: expensePrice });
+             location.reload()
         });
 
         // Add new expenses to the top of the list
@@ -145,6 +188,8 @@ window.addEventListener('load', () => {
         const expense = { text: expenseText, price: expensePrice, date: expenseDate };
         savedExpenses.unshift(expense);
         setCookie("expenses", JSON.stringify(savedExpenses));
+         // Recalculate and display the total expense
+         calculateTotalExpense();
     });
 
     // Section: Load and Display Expenses from Cookies
@@ -202,6 +247,8 @@ window.addEventListener('load', () => {
                 expense_price_el.contentEditable = true;
                 expense_date_el.contentEditable = true;
                 expense_item_el.focus();
+                // After saving an edited expense, call calculateTotalExpense to update the total
+        calculateTotalExpense();
             } else {
                 // Save the edited expense
                 const updatedExpenseText = expense_item_el.textContent.replace("Item: ", ""); // Remove "Item: " prefix
@@ -233,6 +280,8 @@ window.addEventListener('load', () => {
                 expense_price_el.contentEditable = false;
                 expense_date_el.contentEditable = false;
                 expense_edit_el.innerText = "Edit";
+                // After saving an edited expense, call calculateTotalExpense to update the total
+        calculateTotalExpense();
             }
         });
 
@@ -241,6 +290,10 @@ window.addEventListener('load', () => {
             // Remove the expense from the saved expenses in cookies
             const updatedExpenses = savedExpenses.filter((e) => e.text !== expense.text);
             setCookie("expenses", JSON.stringify(updatedExpenses));
+            // Recalculate and display the total expense
+            calculateTotalExpense({ price: expensePrice });
+            location.reload()
+
         });
         // End of Edit and Save Expense
     });
@@ -279,3 +332,6 @@ deleteCookiesButton.addEventListener("click", () => {
         location.reload();
     }
 });
+
+// Call calculateTotalExpense initially to display the total expense on page load
+calculateTotalExpense();

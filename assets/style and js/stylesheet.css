@@ -228,6 +228,15 @@ input, button {
   background-color: #CC0000; /* Hover background color */
 }
 
+#total_expense {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  padding: 10px;
+  text-align: left; 
+  margin-top: 10px;
+}
+
 
 
 
@@ -320,7 +329,12 @@ input, button {
   .delete-cookies-button{
     padding: 5px;
   }
+  #total_expense{
+    font-size: 12px;
+  }
 }
+
+
 
 
 
